@@ -41,10 +41,11 @@ int vertCount = 10;
 /***********************************************
  * end user spec
  **********************************************/
-
+ 
 int nPoints =0;
+int debugcount = 0;
 float probe1temp, probe2temp, probe3temp; //declare temps
-boolean madeContact = false, justSent = true; //declare comm bools
+boolean madeContact = false, justSent = true, firstrun=true; //declare comm bools
 
  
 /*  setup controlP5   */
@@ -77,21 +78,21 @@ void setup(){
      .setSize(100,20)
      .setFont(TitleFont)
      .setFocus(true)
-     .setColor(color(255,0,0));
+     .setColor(color(0,255,0));
   
   probe3field = cP5.addTextfield("Probe 3")
      .setPosition(10,100)
      .setSize(100,20)
      .setFont(TitleFont)
      .setFocus(true)
-     .setColor(color(255,0,0));
+     .setColor(color(0,0,255));
      
-  savebutton = cP5.addButton("Save Data")
+  savebutton = cP5.addButton("Save_Data")
      .setValue(0.0)
      .setPosition(10,560)
      .setSize(100,20);
   
-  restartbutton = cP5.addButton("Restart Acquisition")
+  restartbutton = cP5.addButton("Restart_Acquisition")
      .setValue(0.0)
      .setPosition(10,520)
      .setSize(100,20);
@@ -110,7 +111,82 @@ void setup(){
 void draw(){
   background(0);
   fill(255);
+  
+  print("run ");
+  println(debugcount);
+  fakeData();
+  
   drawGraph();
+  
+  
+  debugcount++;
 }
 
 
+void fakeData(){
+  
+  if (debugcount==0) {
+    probe1temp=20;
+    probe2temp=25;
+    probe3temp=16;
+    firstrun=false;
+    print("first run: ");
+  }
+  if (debugcount>0){
+    if (probe1temp <= 20){
+      probe1temp += random(-0.2,1);
+      //print("probe1 low");
+    }
+    if (probe1temp > 20 && probe1temp < 30) {
+      probe1temp += random(-1,1);
+      //print("probe1 med");
+    }
+    if (probe1temp >= 30) {
+      probe1temp += random(-1,0.2);
+      //print("probe1 high");
+    }
+    
+    if (probe2temp <= 20){
+      probe2temp += random(-0.2,1);
+    }
+    if (probe2temp > 20 && probe2temp < 30) {
+      probe2temp += random(-1,1);
+    }
+    if (probe2temp >= 30) {
+      probe2temp += random(-1,0.2);
+    }
+    
+    if (probe3temp <= 20){
+      probe3temp += random(-0.2,1);
+    }
+    if (probe3temp > 20 && probe3temp < 30) {
+      probe3temp += random(-1,1);
+    }
+    if (probe3temp >= 30) {
+      probe3temp += random(-1,0.2);
+    }
+    
+  }
+  probe1field.setText(nf(probe1temp,2,2));
+  probe2field.setText(nf(probe2temp,2,2));
+  probe3field.setText(nf(probe3temp,2,2));
+      
+}
+
+/*
+void Save_Data(){
+  output.flush(); // Writes the remaining data to the file
+  output.close(); // Finishes the file
+}
+
+void Restart_Acquisition(){
+  //--- setup serial comm with arduino 
+  println(Serial.list());
+  myPort = new Serial(this, Serial.list()[2], 9600);
+  myPort.bufferUntil(10);
+  if (outputFileName!="") {
+    output = createWriter(outputFileName);
+    output.println("millis,label,row,probe1,probe2,probe3");
+  }
+}
+*/

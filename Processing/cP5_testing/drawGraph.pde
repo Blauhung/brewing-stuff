@@ -3,9 +3,10 @@
 
 
 
-void drawGraph(){
+void drawGraph() {
   //gridlines
   stroke(0);
+  strokeWeight(1);
   fill(230);
   rect(ioLeft, graphTop, ioWidth-1, graphHeight);
   
@@ -54,9 +55,120 @@ void drawGraph(){
     }
     if (nPoints < arrayLength) nPoints++;
 
-    probe1Data[0] = int(graphHeight)-int(graphHeight*(probe1temp-InScaleMin)/(InScaleMax-InScaleMin));
-    probe2Data[0] = int(graphHeight)-int(graphHeight*(probe2temp-InScaleMin)/(InScaleMax-InScaleMin));
-    probe3Data[0] = int(graphHeight)-int(graphHeight*(probe3temp-InScaleMin)/(InScaleMax-InScaleMin));
+    probe1Data[0] = int(probe1temp);
+    probe2Data[0] = int(probe2temp);
+    probe3Data[0] = int(probe3temp);
+  }
+  
+  //draw lines
+  strokeWeight(2);
+  for (int i=0; i<nPoints-2; i++){
+    int X1 = int(ioRight-2-float(i)*pointWidth);
+    int X2 = int(ioRight-2-float(i+1)*pointWidth);
+    boolean y1Above, y1Below, y2Above, y2Below;
+    
+    /* probe 1 */
+    boolean drawLine=true;
+    stroke(255,0,0);
+    int Y1 = probe1Data[i];
+    int Y2 = probe1Data[i+1];
+    y1Above = (Y1>graphHeight); 
+    y1Below = (Y1<0); 
+    y2Above = (Y2>graphHeight); 
+    y2Below = (Y2<0); 
+    if(y1Above) {
+      if(y2Above) drawLine=false;
+      else if(y2Below) {
+        Y1 = (int)graphHeight;
+        Y2 = 0;
+      }
+      else Y1 = (int)graphHeight;
+    }
+    else if(y1Below){
+      if(y2Below) drawLine=false;
+      else if(y2Above) {
+        Y1 = 0;
+        Y2 = (int)graphHeight;
+      }
+      else Y1 = 0;
+    }
+    else {
+      if(y2Below) Y2 = 0;
+      else if(y2Above) Y2 = (int)graphHeight;
+    }
+    if(drawLine)
+    {
+      line(X1,Y1+graphTop, X2, Y2+graphTop);
+    }
+    
+    /* probe 2 */
+    drawLine=true;
+    stroke(0,255,0);
+    Y1 = probe2Data[i];
+    Y2 = probe2Data[i+1];
+    y1Above = (Y1>graphHeight); 
+    y1Below = (Y1<0); 
+    y2Above = (Y2>graphHeight); 
+    y2Below = (Y2<0); 
+    if(y1Above) {
+      if(y2Above) drawLine=false;
+      else if(y2Below) {
+        Y1 = (int)graphHeight;
+        Y2 = 0;
+      }
+      else Y1 = (int)graphHeight;
+    }
+    else if(y1Below){
+      if(y2Below) drawLine=false;
+      else if(y2Above) {
+        Y1 = 0;
+        Y2 = (int)graphHeight;
+      }
+      else Y1 = 0;
+    }
+    else {
+      if(y2Below) Y2 = 0;
+      else if(y2Above) Y2 = (int)graphHeight;
+    }
+    if(drawLine)
+    {
+      line(X1,Y1+graphTop, X2, Y2+graphTop);
+    }
+    
+    /* probe 3 */
+    drawLine=true;
+    stroke(0,0,255);
+    Y1 = probe3Data[i];
+    Y2 = probe3Data[i+1];
+    y1Above = (Y1>graphHeight); 
+    y1Below = (Y1<0); 
+    y2Above = (Y2>graphHeight); 
+    y2Below = (Y2<0); 
+    if(y1Above) {
+      if(y2Above) drawLine=false;
+      else if(y2Below) {
+        Y1 = (int)graphHeight;
+        Y2 = 0;
+      }
+      else Y1 = (int)graphHeight;
+    }
+    else if(y1Below){
+      if(y2Below) drawLine=false;
+      else if(y2Above) {
+        Y1 = 0;
+        Y2 = (int)graphHeight;
+      }
+      else Y1 = 0;
+    }
+    else {
+      if(y2Below) Y2 = 0;
+      else if(y2Above) Y2 = (int)graphHeight;
+    }
+    if(drawLine)
+    {
+      line(X1,Y1+graphTop, X2, Y2+graphTop);
+    }
+    
   }
 
 }
